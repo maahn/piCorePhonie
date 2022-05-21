@@ -56,8 +56,8 @@ to add
     usr/local/lib/python3.8/site-packages/
 
 
-### To control the RC522 rfid reader
-
+### RC522 rfid reader
+Install python libraries
     sudo pip install squeezebox-controller pyyaml spidev RPi.GPIO
 
 The pi-rc522 version on pypi didn't work for me, so take the github repo:
@@ -67,9 +67,6 @@ The pi-rc522 version on pypi didn't work for me, so take the github repo:
     cd pi-rc522/
     sudo pip install .
 
-
-
-### RFID reader
 Clone this repository
     git clone https://github.com/maahn/piCorePhonie
 
