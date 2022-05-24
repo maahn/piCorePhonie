@@ -33,7 +33,7 @@ Before inserting the SD card, add file wpa_supplicant.conf to boot partition:
 
 ### PCP Extensions:
 
-Using the "main page" of the web GUI, resize the file system so that it uses teh hwole SD card ("resize FS"). Then, install these PCP extensions:
+Using the "main page" of the web GUI, resize the file system so that it uses the whole SD card ("resize FS"). Then, install these PCP extensions:
 * python3.8-dev
 * python3.8-pip
 * python3.8-wheel
