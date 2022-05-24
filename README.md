@@ -10,6 +10,7 @@ See instructions below to set up a Phoniebox with control buttons, rotary encode
 Download picoreplayer https://docs.picoreplayer.org/downloads/ and follow instructions https://docs.picoreplayer.org/getting-started/ . Call player piCorePhonie
 
 
+
 ### Set up Wifi without Ethernet
 
 Before inserting the SD card, add file wpa_supplicant.conf to boot partition:
@@ -32,15 +33,15 @@ Before inserting the SD card, add file wpa_supplicant.conf to boot partition:
 
 ### PCP Extensions:
 
-Using the web GUI, install these PCP extensions:
+Using the "main page" of the web GUI, resize the file system so that it uses teh hwole SD card ("resize FS"). Then, install these PCP extensions:
 * python3.8-dev
 * python3.8-pip
 * python3.8-wheel
 * python3.8-setuptools
-* pit
+* git
 * gcc
-* glibc-base
-* Linux-5.10 api headers
+* glibc_base_dev
+* linux-5.10.y_api_headers
 * pcp-sbpd
 
 
@@ -102,15 +103,11 @@ See button.sh in the repository and modify th elast line. Make sure to check out
 ### OnOff Shim
 https://forums.slimdevices.com/showthread.php?109734-piCorePlayer-Pimoroni-OnOff-Shim
 
-- set PiCorePlayer web interface to 'advanced'
-- go to 'Tweaks' page
-
-under 'Poweroff/Shutdown Overlays'
+go to 'Tweaks' page of the PiCorePlayer GUI, under 'Poweroff/Shutdown Overlays'
 
 - set gpio poweroff to 'yes' , '4', 'Active Low'
 - set gpio shutdown to 'yes', '17', 'Active Low'
-
-No scripts, no specific configurations, just simply out of the box.
+- click on 'Install Monitor'
 
 
 ### Startup sound
