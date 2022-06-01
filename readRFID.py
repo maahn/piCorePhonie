@@ -4,13 +4,11 @@ from time import sleep
 from pirc522 import RFID
 import yaml
 from squeezebox_controller import SqueezeBoxController
+import sys
+import os
 
 
-
-def loop(fname):
-
-  with open(fname, 'r') as stream:
-    config = yaml.load(stream, Loader=yaml.Loader)
+def loop(config):
 
   print(config)
 
@@ -58,15 +56,20 @@ def loop(fname):
 
 def main():
 
-  import sys
 
 
   print(len(sys.argv))
   if len(sys.argv) != 2:
-    print("Usage: rfid-squeezectl.py configfile.yaml", file=sys.stderr)
+    print("Usage: readRFID.py configfile.yaml", file=sys.stderr)
     sys.exit(1)
   else:
-    loop(sys.argv[1])
+    with open(sys.argv[1], 'r') as stream:
+      config = yaml.load(stream, Loader=yaml.Loader)
+
+    if "startsound" in config.keys():
+      os.system(f"/usr/local/bin/mpg123 {config['startsound']}")
+
+    loop(config)
 
 if __name__ == "__main__":
   main()

@@ -43,7 +43,7 @@ Using the "main page" of the web GUI, resize the file system so that it uses the
 * glibc_base_dev
 * linux-5.10.y_api_headers
 * pcp-sbpd
-
+* pcp-mpg123 
 
 
 ### backup python directory
@@ -72,26 +72,36 @@ Clone this repository
     git clone https://github.com/maahn/piCorePhonie
 
 
-Create the config file /home/tc/rfid_config.yaml . Mine looks like
+Create the config file `/home/tc/piCorePhonie/rfid_config.yaml`. Mine looks like
 
     host: 192.168.0.243
     port: 9000
-    player: piCorePhonie
+    player: Piloubox2
+    startsound: /home/tc/176674950.mp3
+    timeout: 600
     80-243-128-154-185: "Spotify: weiss"
     115-232-255-127-27:  "Spotify: gelb"
     96-89-35-45-55: "Spotify: blau"
     134-20-108-241-15: "Spotify: grun"
     54-1-102-241-160: "Spotify: orange"
 
-host port, and player name could be probably figured out automatically... The numbers are the ids of the RFID cards and the corresponding LMS playlists. 
+host port, and player name could be probably figured out automatically... `startsound` is an mp3 file that is played when the player is ready. If the key `startsound` is missing in the YAML file, no sound is played. `timeout` is the idle time in seconds after which the player turns off (see below). The numbers are the ids of the RFID cards and the corresponding LMS playlists. 
 To get the RFID ids, ssh to the raspberry, hold an RFID tag to the reader, and run
     
     python3 showRFID.py
 
-Using the web GUI, got to tweaks, and add this picoreplayer User commands (under tweaks) to start the RFID
+Using the web GUI, got to tweaks, and add the following to the picoreplayer User commands (under tweaks) to start the RFID
 script after booting
 
-    /home/tc/piCorePhonie/readRFID.py /home/tc/rfid_config.yaml > /home/tc/readRFID.out 2> /home/tc/readRFID.err
+    /home/tc/piCorePhonie/readRFID.py /home/tc/piCorePhonie/rfid_config.yaml > /home/tc/readRFID.out 2> /home/tc/readRFID.err
+
+### Shutdown script
+
+To turn the player off after some time when idle, add the following to the User commands:
+
+    /home/tc/piCorePhonie/idleShutdown.py /home/tc/piCorePhonie/rfid_config.yaml > /home/tc/idleShutdown.out 2> /home/tc/idleShutdown.err
+
+The diel timeout is specified in the yaml file with the `timeout` key. 
 
 
 ###  GPIO Buttons
@@ -109,11 +119,6 @@ go to 'Tweaks' page of the PiCorePlayer GUI, under 'Poweroff/Shutdown Overlays'
 - set gpio shutdown to 'yes', '17', 'Active Low'
 - click on 'Install Monitor'
 
-
-### Startup sound
-In case you want a startup sound, install extension pcp-mpg123 and copy a file to the user 
-directory. Using the web GUI, got to tweaks, and add this user command 
-    /usr/local/bin/mpg123 /home/tc/myfile.mp3
 
 ### Status LED
 To add external status LEDs, follow https://docs.picoreplayer.org/how-to/edit_config_txt/ to edit config.txt
