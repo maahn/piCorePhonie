@@ -69,6 +69,7 @@ The pi-rc522 version on pypi didn't work for me, so take the github repo:
     sudo pip install .
 
 Clone this repository
+
     git clone https://github.com/maahn/piCorePhonie
 
 
