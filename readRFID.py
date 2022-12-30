@@ -1,12 +1,13 @@
 #!/usr/local/bin/python3
 
-from time import sleep
+from time import sleep, time
 from pirc522 import RFID
 import yaml
 from squeezebox_controller import SqueezeBoxController
 import sys
 import os
 
+maxWaitTime = 10 # time to wait after playlist is restarted when rfid tag is presented again
 
 def loop(config):
 
@@ -14,7 +15,7 @@ def loop(config):
 
   controller = SqueezeBoxController(config["host"], config["port"])
 
-  
+  startTime = 0
   rdr = RFID()
   rdr.set_antenna_gain(5)
   
@@ -28,13 +29,14 @@ def loop(config):
       if not error:
         playlist_name = "-".join(str(i) for i in uid)
         if playlist_name == old_playlist_name:
-          print("Playlist unchanged", flush=True)
-          sleep(2)
-          continue
+          if (time() - startTime) < maxWaitTime:
+            print("Playlist unchanged", flush=True)
+            sleep(0.25)
+            continue
         old_playlist_name = playlist_name
         if playlist_name not in config.keys():
           print(playlist_name, "not found in config", flush=True, file=sys.stderr)
-          sleep(2)
+          sleep(0.25)
           continue
         print(playlist_name, config[playlist_name], flush=True)
         params = {
@@ -46,8 +48,10 @@ def loop(config):
           controller.search_and_play(params)
         except:
           print(config[playlist_name], "not found in Spotify", flush=True, file=sys.stderr)
-          sleep(2)
+          sleep(0.25)
           continue
+        else:
+          startTime = time()
     sleep(2)
   # Calls GPIO cleanup
   rdr.cleanup()
